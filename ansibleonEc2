@@ -1,0 +1,73 @@
+1) Create RedHat 3 Servers (1-AnsibleServer , 2- Host Machines for demo) in AWS.
+
+2) Create Ansible User and provide sudo access in all Servers.
+
+    2.1) Create the user ansible and set the password on all hosts:
+           sudo useradd ansible
+           sudo passwd ansible
+     
+    2.2) Make the necessary entry in sudoers file /etc/sudoersfor ansible        
+           user for password-less sudo access:
+        
+           ansible ALL=(ALL) NOPASSWD: ALL
+
+           visudo
+
+    2.3) Make the necessary changes  in sshd_config file /etc/ssh/sshd_config    
+           to enable password based authentication.
+
+         Un comment PasswordAuthentication yes
+         and comment  PasswordAuthentication no.
+         And save the file .
+
+            vi /etc/ssh/sshd_config
+
+     2.4)    Then restart sshd service.
+                sudo service sshd restart
+
+=============================================================================
+               Install Ansible in Red hat (Ansible Server)
+=============================================================================
+
+1)     SSH to Redhat System & Switch to ansible user
+       sudo su ansible
+      
+2)     Install python
+       sudo yum install python3 -y
+      
+3)    Update python alaternatives
+       sudo alternatives --set python /usr/bin/python3
+      
+4)    Verify Python Version
+         python --version
+ 
+5)    Install PIP
+       sudo yum -y install python3-pip
+      
+6)    Install ansible using PIP
+       pip3 install ansible --user
+      
+7)    Verify Ansible version
+       ansible --version
+      
+8)    Create ansible folder under /etc
+       sudo mkdir /etc/ansible
+      
+9)    create ansible.cfg file under /etc/ansible ., and paste complete content from below git link.
+      https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg
+  
+       sudo vi  /etc/ansible/ansible.cfg
+
+10)   Create hosts file under /etc/ansible.
+        Sample content can found in below git link.
+        https://raw.githubusercontent.com/ansible/ansible/devel/examples/hosts
+ 
+       sudo vi  /etc/ansible/hosts
+
+//Optional Step
+11) Install sshpass in Ansible server if you want to cofigure host machines with username and  
+      password.
+
+    sudo wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    sudo rpm -ivh epel-release-6-8.noarch.rpm
+    sudo yum --enablerepo=epel -y install sshpass
